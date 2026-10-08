@@ -21,12 +21,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@v4
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@b56ba49b26e50535fa1ea9259da707ac9f4f1db4 # v3.28.10
+        uses: github/codeql-action/init@v3
         with:
           languages: javascript-typescript
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@b56ba49b26e50535fa1ea9259da707ac9f4f1db4 # v3.28.10
+        uses: github/codeql-action/analyze@v3
