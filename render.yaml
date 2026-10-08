@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: kibar-api
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    region: frankfurt
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: RP_ID
+        value: kibarapps.vercel.app
+      - key: RP_NAME
+        value: KIBAR
+      - key: WEB_ORIGIN
+        value: https://kibarapps.vercel.app
