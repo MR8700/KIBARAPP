@@ -33,7 +33,7 @@ export class AuthService {
   private async regOptions(userId: string, name: string, kind: 'register' | 'recover' | 'add', extra: { codeId?: string; revokeOthers?: boolean } = {}) {
     const existing = await this.db.credential.findMany({ where: { userId, revokedAt: null } });
     const options = await generateRegistrationOptions({
-      rpName: RP_NAME, rpID: RP_ID, userName: name, userID: new TextEncoder().encode(userId),
+      rpName: RP_NAME, rpID: RP_ID, userName: name, userDisplayName: name, userID: new TextEncoder().encode(userId),
       attestationType: 'none',
       excludeCredentials: existing.map((c) => ({ id: c.credentialId })),
       authenticatorSelection: { residentKey: 'required', userVerification: 'required' }, // passkey découvrable ; biométrie/code de l'appareil OBLIGATOIRE
