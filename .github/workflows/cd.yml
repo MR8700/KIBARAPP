@@ -28,6 +28,7 @@ jobs:
 
       # 1. Migrations Prisma de Production
       - name: Run Prisma Production Migrations
+        if: ${{ secrets.PROD_MIGRATION_DATABASE_URL != '' }}
         env:
           DATABASE_URL: ${{ secrets.PROD_MIGRATION_DATABASE_URL }}
           DIRECT_URL: ${{ secrets.PROD_MIGRATION_DIRECT_URL }}
@@ -35,20 +36,20 @@ jobs:
           npx prisma migrate deploy --schema=apps/api/prisma/schema.prisma
 
       # 2. Déploiement de l'API sur Fly.io
-      - name: Setup Flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@df3e1a6a7077e23b10b0e50f3b92f75a9e3381e0 # v1.5
-      
       - name: Deploy API to Fly.io
+        if: ${{ secrets.FLY_API_TOKEN != '' }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
         run: |
-          flyctl deploy --app kibar-api \
+          curl -L https://fly.io/install.sh | sh
+          /home/runner/.fly/bin/flyctl deploy --app kibar-api \
             --strategy rolling \
             --ha=true \
             --wait-timeout 300
 
       # 3. Déploiement Web sur Vercel
       - name: Deploy Frontend to Vercel
+        if: ${{ secrets.VERCEL_TOKEN != '' }}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -60,8 +61,9 @@ jobs:
 
       # 4. Smoke tests post-déploiement
       - name: Run Post-Deploy Smoke Tests
+        if: ${{ secrets.FLY_API_TOKEN != '' || secrets.VERCEL_TOKEN != '' }}
         env:
-          API_ORIGIN: https://api.kibar.app
-          WEB_ORIGIN: https://app.kibar.app
+          API_ORIGIN: https://kibar-api.onrender.com
+          WEB_ORIGIN: https://kibarapps.vercel.app
         run: |
           bash scripts/deploy/smoke-test.sh

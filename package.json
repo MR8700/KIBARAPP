@@ -5,6 +5,8 @@
     "apps/*"
   ],
   "scripts": {
+    "build": "npm -w apps/web run build",
+    "start": "npm -w apps/web run start",
     "api": "npm -w apps/api run start:dev",
     "web": "npm -w apps/web run dev",
     "db": "docker compose up -d db redis minio clamav"
