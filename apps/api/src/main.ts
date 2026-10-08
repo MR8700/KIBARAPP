@@ -59,9 +59,20 @@ async function bootstrap() {
   app.use(json({ limit: '2mb' }));
   app.use(urlencoded({ extended: true, limit: '2mb' }));
 
-  // 7. CORS restreint à WEB_ORIGIN exact
+  // 7. CORS : WEB_ORIGIN, Vercel et dev local
+  const allowedOrigins = [
+    cfg.WEB_ORIGIN,
+    cfg.WEB_ORIGIN.replace(/\/$/, ''),
+    'http://localhost:3000',
+  ];
   app.enableCors({
-    origin: cfg.WEB_ORIGIN,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Origine CORS non autorisée: ${origin}`));
+      }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Step-Up', 'Accept', 'X-Request-Id'],

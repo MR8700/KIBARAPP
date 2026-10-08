@@ -12,6 +12,12 @@ import { recoveryCode, sha256, token } from '../common/crypto';
 const RP_ID = process.env.RP_ID ?? 'localhost';
 const RP_NAME = process.env.RP_NAME ?? 'KIBAR';
 const ORIGIN = process.env.WEB_ORIGIN ?? 'http://localhost:3000';
+const ALLOWED_ORIGINS = Array.from(new Set([
+  ORIGIN,
+  ORIGIN.replace(/\/$/, ''),
+  'https://kibarapps.vercel.app',
+  'http://localhost:3000',
+]));
 const REFRESH_DAYS = 30;
 
 @Injectable()
@@ -40,7 +46,7 @@ export class AuthService {
    *  Récupération : le code n'est consommé (et les autres appareils révoqués) qu'ici, une fois la nouvelle passkey prouvée valide. */
   private async enrollDevice(userId: string, response: any, deviceName: string, platform: string, c: NonNullable<Awaited<ReturnType<ChallengeStore['take']>>>) {
     const v = await verifyRegistrationResponse({
-      response, expectedChallenge: c.challenge, expectedOrigin: ORIGIN, expectedRPID: RP_ID, requireUserVerification: true,
+      response, expectedChallenge: c.challenge, expectedOrigin: ALLOWED_ORIGINS, expectedRPID: RP_ID, requireUserVerification: true,
     }).catch(() => null);
     if (!v?.verified) throw new UnauthorizedException('Preuve invalide');
     const { credential } = v.registrationInfo!;
@@ -85,7 +91,7 @@ export class AuthService {
     const cred = await this.db.credential.findUnique({ where: { credentialId: response?.id ?? '' }, include: { device: true } });
     if (!cred || cred.userId !== userId || cred.revokedAt || cred.device.revokedAt) throw new UnauthorizedException('Appareil non autorisé');
     const v = await verifyAuthenticationResponse({
-      response, expectedChallenge: c.challenge, expectedOrigin: ORIGIN, expectedRPID: RP_ID, requireUserVerification: true,
+      response, expectedChallenge: c.challenge, expectedOrigin: ALLOWED_ORIGINS, expectedRPID: RP_ID, requireUserVerification: true,
       credential: { id: cred.credentialId, publicKey: new Uint8Array(cred.publicKey), counter: cred.signCount, transports: cred.transports as any },
     }).catch(() => null);
     if (!v?.verified) throw new UnauthorizedException('Preuve invalide');
@@ -126,7 +132,7 @@ export class AuthService {
     const cred = await this.db.credential.findUnique({ where: { credentialId: response?.id ?? '' }, include: { device: true, user: true } });
     if (!cred || cred.revokedAt || cred.device.revokedAt || cred.user.status !== 'ACTIVE') throw new UnauthorizedException('Appareil non autorisé');
     const v = await verifyAuthenticationResponse({
-      response, expectedChallenge: c.challenge, expectedOrigin: ORIGIN, expectedRPID: RP_ID, requireUserVerification: true,
+      response, expectedChallenge: c.challenge, expectedOrigin: ALLOWED_ORIGINS, expectedRPID: RP_ID, requireUserVerification: true,
       credential: { id: cred.credentialId, publicKey: new Uint8Array(cred.publicKey), counter: cred.signCount, transports: cred.transports as any },
     }).catch(() => null);
     if (!v?.verified) throw new UnauthorizedException('Preuve invalide');
