@@ -1,6 +1,14 @@
 # KIBAR APP
 Principe : **l'appareil est la clé** (passkeys WebAuthn). Aucun mot de passe.
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FMR8700%2FKIBARAPP&root-directory=apps%2Fweb&project-name=kibarapp&env=NEXT_PUBLIC_API_URL&envDescription=Adresse%20de%20l%20API%20KIBAR&envLink=https%3A%2F%2Fapi.kibar.app)
+
+## Déploiement Production 1-Clic
+- **Web Frontend** : Cliquez sur le bouton ci-dessus pour déployer sur **`kibarapp.vercel.app`**.
+- **Base Neon & Redis Upstash** : Disponibles directement en 1 clic via le Vercel Marketplace (Intégrations Neon & Upstash).
+- **Backend API & ClamAV** : Déployés sur **Fly.io** (`https://kibar-api.fly.dev`) via `fly deploy`.
+- **Guide complet** : Voir [`docs/PRODUCTION.md`](./docs/PRODUCTION.md).
+
 ## Démarrage rapide (développement)
 ```
 cp .env.example apps/api/.env
