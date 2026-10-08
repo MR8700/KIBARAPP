@@ -1,0 +1,16 @@
+node_modules
+.git
+.github
+.next
+dist
+backups
+*.dump
+tmp
+temp
+*.zip
+.env
+.env.*
+scripts/deploy/.deploy.env
+docs
+design
+*.md

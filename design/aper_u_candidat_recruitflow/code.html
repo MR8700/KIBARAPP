@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="fr" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_stack" name="shell-type"><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-low": "#eff4ff", "primary-fixed-dim": "#b4c5ff", "error": "#ba1a1a", "on-error-container": "#93000a", "secondary": "#565e74", "surface-bright": "#f8f9ff", "tertiary": "#006243", "on-surface": "#0b1c30", "on-tertiary": "#ffffff", "primary-container": "#2563eb", "background": "#f8f9ff", "on-primary-fixed": "#00174b", "surface-container-lowest": "#ffffff", "secondary-fixed": "#dae2fd", "primary-fixed": "#dbe1ff", "secondary-fixed-dim": "#bec6e0", "on-error": "#ffffff", "tertiary-fixed-dim": "#68dba9", "on-background": "#0b1c30", "on-secondary-container": "#5c647a", "on-primary-fixed-variant": "#003ea8", "on-primary": "#ffffff", "surface-container-highest": "#d3e4fe", "on-tertiary-fixed": "#002114", "error-container": "#ffdad6", "surface": "#f8f9ff", "on-secondary-fixed": "#131b2e", "inverse-primary": "#b4c5ff", "outline-variant": "#c3c6d7", "surface-container-high": "#dce9ff", "on-secondary-fixed-variant": "#3f465c", "inverse-on-surface": "#eaf1ff", "on-tertiary-fixed-variant": "#005137", "tertiary-fixed": "#85f8c4", "inverse-surface": "#213145", "surface-variant": "#d3e4fe", "surface-dim": "#cbdbf5", "primary": "#004ac6", "outline": "#737686", "on-secondary": "#ffffff", "on-tertiary-container": "#bdffdc", "on-surface-variant": "#434655", "tertiary-container": "#007d57", "secondary-container": "#dae2fd", "surface-container": "#e5eeff", "surface-tint": "#0053db", "on-primary-container": "#eeefff" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-xl": "2rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "gutter": "1rem", "space-lg": "1.5rem", "gutter-desktop": "1.5rem", "space-md": "1rem", "margin-desktop": "2.5rem", "margin-tablet": "1.5rem", "margin": "1rem" }, "fontFamily": { "body-sm": ["Inter"], "display-lg-mobile": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "label-md": ["Inter"], "label-lg": ["Inter"], "display-lg": ["Plus Jakarta Sans"], "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "body-md": ["Inter"], "headline-lg": ["Plus Jakarta Sans"] }, "fontSize": { "body-sm": ["12px", {"lineHeight": "16px", "fontWeight": "400"}], "display-lg-mobile": ["32px", {"lineHeight": "40px", "fontWeight": "700"}], "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}], "headline-sm": ["18px", {"lineHeight": "24px", "fontWeight": "600"}], "label-md": ["13px", {"lineHeight": "18px", "fontWeight": "600"}], "label-lg": ["15px", {"lineHeight": "20px", "fontWeight": "600"}], "display-lg": ["40px", {"lineHeight": "48px", "fontWeight": "700"}], "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}], "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}], "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "600"}], "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}], "headline-lg": ["30px", {"lineHeight": "38px", "fontWeight": "700"}] } } } }</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen">
+<!-- En-tête sobre : Titre "Aperçu candidat" avec indicateur visuel discret -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-high/60 pt-safe">
+<div class="min-h-[3.5rem] py-2 px-margin flex items-center justify-between flex-wrap gap-2"> <div class="flex items-center gap-2 min-w-0 flex-1"> <button aria-label="Retour" class="w-9 h-9 -ml-1 rounded-lg flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all flex-shrink-0" onclick="history.back()" style="border-width: 1px 1px 3px; border-style: solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(148, 163, 184); border-image: none; box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 4px;"> <span class="material-symbols-outlined text-[20px]">arrow_back</span> </button> <h1 class="font-headline-sm text-[17px] text-on-surface font-bold tracking-tight truncate">Aperçu candidat</h1> </div> <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container text-secondary text-label-sm font-medium flex-shrink-0"> <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> <span class="">Mode simulation</span> </div> </div>
+</header>
+<main class="flex-1 flex flex-col relative w-full pt-14 pb-safe bg-surface">
+<div class="flex flex-col w-full pb-32"> <!-- Contenu identique à 100% à l'expérience candidat mobile réelle --> <div class="flex flex-col gap-space-lg"> <!-- Visuel immersif pur sans textes inutiles --> <div class="relative w-full h-52 overflow-hidden bg-surface-container"> <img class="w-full h-full object-cover" data-alt="Professional commercial business team standing confidently in a modern bright corporate headquarters with high glass windows, holding digital tablets and files, subtle deep blue and modern light slate color palette, ultra clean editorial lighting, 8k resolution" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi0SLKIX8gHiFIIKPAqOvdXrmK-5VfxLag5J1Tll3sy0Zd_k2SD5jftLGhSlnnEK3YH3SaYKc0MjPK10_Emf3ywlBpy7VqrT3F2EUv0mTjTGrHCgWVDRFch3n22R83OMoDklM72DN_LxdnJomMx0YvF1zqdGV1Ki41-gU777R5bW3XObS09P2BLxEKXLME4BuI43z1t9drtfXhqQONlAuQLp85gGcxDH-KopmS94Hj"> <div class="absolute inset-0 bg-gradient-to-t from-on-surface/85 via-transparent to-transparent"></div> <div class="absolute bottom-4 left-4 right-4"> <span class="inline-block px-2 py-0.5 mb-1.5 rounded-md bg-white/20 backdrop-blur-md text-white font-label-sm text-[11px] font-semibold tracking-wide uppercase">KIBAR APP</span> <h2 class="font-headline-lg-mobile text-[20px] sm:text-[22px] text-white font-bold leading-snug drop-shadow-sm break-words"> Recrutement de 20 agents commerciaux </h2> </div> </div> <!-- Corps de l'offre --> <div class="px-margin flex flex-col gap-5"> <p class="font-body-md text-secondary leading-relaxed"> Dans le cadre du déploiement national de nos solutions B2B et retail, le Groupe Nova ouvre une vague d’intégration prioritaire. Opportunité en CDI avec formation certifiante initiale et rémunération attractive variable non plafonnée. </p> <!-- Bouton de téléchargement de l'avis PDF élégant et minimaliste --> <a class="flex items-center justify-between gap-2 px-3.5 py-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/40 text-on-surface hover:bg-surface-container-low transition-colors shadow-sm active:scale-[0.99] w-full min-w-0" href="#" role="button" style="border-width: 1px 1px 2.5px; border-style: solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(148, 163, 184); border-image: none; box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 4px; border-radius: 0.75rem;"> <div class="flex items-center gap-2.5 min-w-0 flex-1"> <span class="material-symbols-outlined text-error text-[20px] flex-shrink-0">picture_as_pdf</span> <span class="font-label-md text-label-md text-on-surface font-semibold truncate flex-1 min-w-0">Avis_recrutement.pdf</span> <span class="text-secondary text-body-sm font-normal flex-shrink-0">· 1.4 Mo</span> </div> <span class="material-symbols-outlined text-primary text-[20px] flex-shrink-0 ml-1">download</span> </a> <!-- Formulaire candidat épuré --> <div class="bg-surface-container-lowest rounded-2xl p-space-md border border-outline-variant/30 shadow-sm flex flex-col gap-4 mt-1" style="border-width: 1px 1px 4px; border-style: solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(148, 163, 184); border-image: none; box-shadow: rgba(15, 23, 42, 0.1) 0px 6px 16px -2px, rgba(255, 255, 255, 0.95) 0px 1px 0px inset; border-radius: 1.25rem;"> <h3 class="font-headline-sm text-headline-sm text-on-surface font-bold">Votre candidature</h3> <!-- Nom et prénom --> <div class="flex flex-col gap-1.5"> <label class="font-label-md text-label-md text-on-surface font-semibold"> Nom et prénom <span class="text-error">*</span> </label> <input class="w-full h-12 px-3.5 rounded-xl bg-surface-container-low border border-transparent focus:border-primary focus:bg-surface-container-lowest text-on-surface font-body-md outline-none transition-all placeholder:text-secondary/60" placeholder="Ex. Fatou Bamba Diop" type="text" value="Fatou Bamba Diop" style="border-width: 1px 1px 2px; border-style: solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(148, 163, 184); border-image: none; box-shadow: rgba(0, 0, 0, 0.04) 0px 1px 2px inset; border-radius: 0.75rem;"> </div> <!-- Téléphone --> <div class="flex flex-col gap-1.5"> <label class="font-label-md text-label-md text-on-surface font-semibold"> Numéro WhatsApp / Téléphone <span class="text-error">*</span> </label> <div class="flex"> <span class="inline-flex items-center px-3.5 rounded-l-xl bg-surface-container text-secondary font-label-md text-label-md border-r border-outline-variant/20" style="border-width: 1px medium 2px 1px; border-style: solid none solid solid; border-color: rgb(203, 213, 225) currentcolor rgb(148, 163, 184) rgb(203, 213, 225); border-image: none; border-top-left-radius: 0.75rem; border-bottom-left-radius: 0.75rem;"> +221 </span> <input class="flex-1 w-full h-12 px-3.5 rounded-r-xl bg-surface-container-low border border-transparent focus:border-primary focus:bg-surface-container-lowest text-on-surface font-body-md outline-none transition-all placeholder:text-secondary/60" placeholder="77 000 00 00" type="tel" value="77 412 89 05" style="border-width: 1px 1px 2px medium; border-style: solid solid solid none; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(148, 163, 184) currentcolor; border-image: none; box-shadow: rgba(0, 0, 0, 0.04) 0px 1px 2px inset; border-top-right-radius: 0.75rem; border-bottom-right-radius: 0.75rem;"> </div> </div> <!-- Niveau d'études --> <div class="flex flex-col gap-1.5"> <label class="font-label-md text-label-md text-on-surface font-semibold"> Dernier niveau d'études <span class="text-error">*</span> </label> <div class="relative"> <select class="w-full h-12 px-3.5 pr-10 rounded-xl bg-surface-container-low border border-transparent focus:border-primary focus:bg-surface-container-lowest text-on-surface font-body-md outline-none transition-all appearance-none cursor-pointer" style="border-width: 1px 1px 2px; border-style: solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(148, 163, 184); border-image: none; box-shadow: rgba(0, 0, 0, 0.04) 0px 1px 2px inset; border-radius: 0.75rem;"> <option selected="">Licence Professionnelle (Bac+3) Commerce &amp; Marketing</option> <option>Baccalauréat</option> <option>BTS / DUT (Bac+2)</option> <option>Master / Ingénieur (Bac+5)</option> </select> <span class="absolute right-3.5 top-1/2 -translate-y-1/2 text-secondary pointer-events-none flex items-center"> <span class="material-symbols-outlined text-[20px]">expand_more</span> </span> </div> </div> <!-- Upload CV épuré --> <div class="flex flex-col gap-1.5"> <label class="font-label-md text-label-md text-on-surface font-semibold"> Curriculum Vitae (CV) <span class="text-error">*</span> </label> <div class="p-3 rounded-xl bg-surface-container-low border border-dashed border-outline-variant flex items-center justify-between gap-3 min-w-0 w-full" style="border-width: 1px 1px 2px; border-style: dashed dashed solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(148, 163, 184); border-image: none; box-shadow: rgba(0, 0, 0, 0.04) 0px 1px 2px inset; border-radius: 0.75rem;"> <div class="flex items-center gap-2.5 min-w-0 flex-1"> <div class="w-9 h-9 rounded-lg bg-surface-container-lowest text-primary flex items-center justify-center flex-shrink-0 shadow-sm"> <span class="material-symbols-outlined text-[20px]">upload_file</span> </div> <div class="flex flex-col min-w-0 flex-1"> <span class="font-label-md text-label-md text-on-surface font-semibold truncate">CV_Fatou_Diop_2024.pdf</span> <span class="font-body-sm text-body-sm text-secondary truncate">412 Ko · Prêt pour envoi</span> </div> </div> <button aria-label="Supprimer le fichier" class="text-secondary hover:text-on-surface p-1 active:scale-95 flex-shrink-0" type="button"> <span class="material-symbols-outlined text-[18px]">close</span> </button> </div> </div> <div class="flex items-center justify-center gap-1.5 pt-2 border-t border-outline-variant/20 text-center"><span class="material-symbols-outlined text-[16px] text-primary">verified_user</span><span class="font-label-sm text-[11px] text-secondary font-medium">Postuler via KIBAR APP · Sécurisé et sans compte</span></div></div> </div> </div> </div>
+<!-- Barre de validation finale en bas : Exactement 2 actions avec contraste parfait -->
+<div class="fixed bottom-0 left-0 right-0 z-40 bg-surface-container-lowest/95 backdrop-blur-xl border-t border-surface-container-high/60 px-margin py-3 pb-safe">
+<div class="max-w-xl mx-auto flex items-center flex-wrap sm:flex-nowrap gap-2.5"> <!-- Action 1 : Secondaire sobre --> <button class="flex-1 min-w-[120px] h-12 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 active:scale-95 transition-all" onclick="history.back()" type="button" style="border-width: 1px 1px 3px; border-style: solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(148, 163, 184); border-image: none; box-shadow: rgba(0, 0, 0, 0.05) 0px 2px 4px;"> <span class="material-symbols-outlined text-[18px] flex-shrink-0">arrow_back</span> <span class="truncate">Modifier</span> </button> <!-- Action 2 : Primaire dominant bleu noble --> <button class="flex-1 min-w-[170px] h-12 px-4 rounded-xl bg-primary hover:bg-primary/95 text-on-primary font-label-lg text-label-lg font-bold shadow-md shadow-primary/25 flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all" id="openSuccessModalBtn" type="button" style="border-bottom: 4px solid rgb(30, 58, 138); box-shadow: rgba(37, 99, 235, 0.35) 0px 6px 14px, rgba(255, 255, 255, 0.3) 0px 1px 0px inset;"> <span class="truncate">Valider le lancement</span> <span class="material-symbols-outlined text-[18px] flex-shrink-0">arrow_forward</span> </button> </div>
+</div>
+<!-- Modal Tiroir de Lancement Réussi -->
+<div class="fixed inset-0 z-50 flex flex-col justify-end transition-opacity duration-300 pointer-events-none opacity-0" id="successDrawer">
+<div class="absolute inset-0 bg-on-surface/40 backdrop-blur-sm transition-opacity" id="backdrop"></div>
+<div class="relative z-10 w-full max-h-[85vh] overflow-y-auto bg-surface-container-lowest rounded-t-3xl shadow-2xl flex flex-col p-space-lg transform translate-y-full transition-transform duration-300 ease-out" id="sheetContent">
+<div class="w-12 h-1.5 rounded-full bg-secondary-fixed mx-auto mb-space-md flex-shrink-0"></div>
+<div class="flex flex-col items-center text-center gap-space-xs">
+<div class="w-16 h-16 rounded-2xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center mb-1 shadow-sm">
+<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-tertiary-container/15 text-tertiary font-label-sm text-label-sm font-bold uppercase tracking-wider">
+            En ligne &amp; Prêt à recevoir
+          </div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface font-bold mt-1">
+            Recrutement lancé avec succès !
+          </h2>
+<p class="font-body-md text-body-md text-secondary max-w-sm mt-0.5">
+            Votre formulaire est actif et prêt à enregistrer les candidatures en direct.
+          </p>
+</div>
+<div class="mt-space-lg p-space-md rounded-2xl bg-surface-container-low flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary font-semibold uppercase tracking-wider">Lien Candidat Dédié</span>
+<span class="flex items-center gap-1 text-tertiary font-label-sm text-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">lock</span> Chiffré SSL
+            </span>
+</div>
+<div class="flex items-center justify-between gap-space-sm bg-surface-container-lowest p-2 pl-3 rounded-xl shadow-sm">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-primary text-[20px] flex-shrink-0">link</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate select-all" id="targetUrl">
+                app.talentform.com/r/8F7K2P
+              </span>
+</div>
+<button class="flex-shrink-0 px-3 py-2 rounded-lg bg-primary text-on-primary font-label-md text-label-md font-semibold active:scale-95 transition-transform flex items-center gap-1" id="copyLinkBtn" type="button">
+<span class="material-symbols-outlined text-[16px]">content_copy</span>
+<span id="copyBtnText" class="">Copier</span>
+</button>
+</div>
+</div>
+<div class="mt-space-md flex flex-col gap-space-sm">
+<span class="font-label-md text-label-md text-on-surface font-bold">Diffuser immédiatement :</span>
+<div class="grid grid-cols-4 gap-2">
+<button class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container hover:bg-surface-container-high active:scale-95 transition-all text-center gap-1.5" onclick="triggerShare('WhatsApp')" type="button">
+<div class="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]">chat</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium truncate w-full">WhatsApp</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container hover:bg-surface-container-high active:scale-95 transition-all text-center gap-1.5" onclick="triggerShare('Telegram')" type="button">
+<div class="w-10 h-10 rounded-full bg-[#229ED9] text-white flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]">send</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium truncate w-full">Telegram</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container hover:bg-surface-container-high active:scale-95 transition-all text-center gap-1.5" onclick="triggerShare('Facebook')" type="button">
+<div class="w-10 h-10 rounded-full bg-[#1877F2] text-white flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]">share</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium truncate w-full">Facebook</span>
+</button>
+<button class="flex flex-col items-center justify-center p-3 rounded-xl bg-surface-container hover:bg-surface-container-high active:scale-95 transition-all text-center gap-1.5" id="showQrBtn" type="button">
+<div class="w-10 h-10 rounded-full bg-secondary text-surface-container-lowest flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]">qr_code_2</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface font-medium truncate w-full">QR Code</span>
+</button>
+</div>
+</div>
+<div class="hidden mt-space-md p-space-md rounded-2xl bg-surface-container-low flex items-center justify-between gap-space-md" id="qrBox">
+<div class="w-20 h-20 bg-surface-container-lowest p-1.5 rounded-xl flex items-center justify-center shadow-sm flex-shrink-0">
+<svg class="w-full h-full text-on-surface" fill="currentColor" viewBox="0 0 100 100">
+<path d="M10 10h30v30H10zm6 6v18h18V16zm4 4h10v10H20zm40-10h30v30H60zm6 6v18h18V16zm4 4h10v10H70zM10 60h30v30H10zm6 6v18h18V66zm4 4h10v10H20zm50 0h10v10H70zm10 10h10v10H80zm-20 0h10v10H60zm20-20h10v10H80zm-10 0h10v10H70z"></path>
+</svg>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-md text-label-md text-on-surface font-bold">QR Code Affiche &amp; Print</span>
+<p class="font-body-sm text-body-sm text-secondary">Idéal pour vos affiches physiques, stands et flyers.</p>
+</div>
+</div>
+<div class="hidden mt-space-sm py-2 px-3 rounded-lg bg-on-surface text-surface-container-lowest font-body-sm text-body-sm text-center items-center justify-center gap-1.5 animate-pulse" id="copyToast">
+<span class="material-symbols-outlined text-[16px] text-tertiary-fixed">check</span>
+          Lien copié dans le presse-papier !
+        </div>
+<div class="mt-space-lg flex flex-col gap-2">
+<button class="w-full h-12 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 active:scale-98 transition-transform shadow-md" id="closeDrawerBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="">Accéder au suivi des candidatures</span>
+</button>
+<button class="w-full py-2.5 rounded-lg text-secondary font-label-md text-label-md text-center active:opacity-70" id="stayPreviewBtn" type="button">
+            Rester sur l'aperçu
+          </button>
+</div>
+</div>
+</div>
+<script>
+      (function initPreviewFlow() {
+        const openBtn = document.getElementById('openSuccessModalBtn');
+        const drawer = document.getElementById('successDrawer');
+        const backdrop = document.getElementById('backdrop');
+        const sheet = document.getElementById('sheetContent');
+        const closeBtn = document.getElementById('closeDrawerBtn');
+        const stayBtn = document.getElementById('stayPreviewBtn');
+        const copyBtn = document.getElementById('copyLinkBtn');
+        const copyText = document.getElementById('copyBtnText');
+        const copyToast = document.getElementById('copyToast');
+        const showQrBtn = document.getElementById('showQrBtn');
+        const qrBox = document.getElementById('qrBox');
+
+        function openModal() {
+          drawer.classList.remove('pointer-events-none', 'opacity-0');
+          drawer.classList.add('opacity-100');
+          sheet.classList.remove('translate-y-full');
+          sheet.classList.add('translate-y-0');
+        }
+
+        function closeModal() {
+          sheet.classList.remove('translate-y-0');
+          sheet.classList.add('translate-y-full');
+          drawer.classList.remove('opacity-100');
+          drawer.classList.add('opacity-0');
+          setTimeout(() => {
+            drawer.classList.add('pointer-events-none');
+          }, 300);
+        }
+
+        if (openBtn) openBtn.addEventListener('click', openModal);
+        if (backdrop) backdrop.addEventListener('click', closeModal);
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+        if (stayBtn) stayBtn.addEventListener('click', closeModal);
+
+        if (copyBtn) {
+          copyBtn.addEventListener('click', () => {
+            const text = 'https://app.talentform.com/r/8F7K2P';
+            navigator.clipboard?.writeText(text).catch(() => {});
+            copyText.textContent = 'Copié !';
+            copyToast.classList.remove('hidden');
+            copyToast.classList.add('flex');
+            setTimeout(() => {
+              copyText.textContent = 'Copier';
+              copyToast.classList.add('hidden');
+              copyToast.classList.remove('flex');
+            }, 2500);
+          });
+        }
+
+        if (showQrBtn && qrBox) {
+          showQrBtn.addEventListener('click', () => {
+            qrBox.classList.toggle('hidden');
+          });
+        }
+
+        window.triggerShare = function(channel) {
+          const shareUrl = 'https://app.talentform.com/r/8F7K2P';
+          const text = encodeURIComponent('Recrutement urgent : 20 agents commerciaux - Groupe Nova. Postulez en 3 min ici : ' + shareUrl);
+          if (channel === 'WhatsApp') {
+            window.open('https://api.whatsapp.com/send?text=' + text, '_blank');
+          } else if (channel === 'Telegram') {
+            window.open('https://t.me/share/url?url=' + encodeURIComponent(shareUrl) + '&text=' + text, '_blank');
+          } else if (channel === 'Facebook') {
+            window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(shareUrl), '_blank');
+          }
+        };
+      })();
+    </script>
+</main>
+
+
+</body></html>

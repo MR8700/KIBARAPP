@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="fr" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><meta content="mobile_tab" name="shell-type"><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "surface-container-low": "#f8fafc", "primary-fixed-dim": "#b4c5ff", "error": "#dc2626", "on-error-container": "#93000a", "secondary": "#64748b", "surface-bright": "#ffffff", "tertiary": "#059669", "on-surface": "#0f172a", "on-tertiary": "#ffffff", "primary-container": "#2563eb", "background": "#ffffff", "surface-container-lowest": "#ffffff", "surface": "#ffffff", "primary": "#1d4ed8", "outline": "#e2e8f0", "outline-variant": "#f1f5f9", "on-surface-variant": "#64748b" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.875rem", "full": "9999px" }, "fontFamily": { "body-sm": ["Inter"], "body-md": ["Inter"], "body-lg": ["Inter"], "headline-sm": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "label-sm": ["Inter"], "label-md": ["Inter"], "label-lg": ["Inter"] } } } }</script><style>
+    body {
+      min-height: max(884px, 100dvh);
+      background-color: #fcfdfe;
+    }
+  </style></head><body class="bg-[#fbfcfd] font-body-md text-body-md text-on-surface antialiased flex flex-col min-h-screen">
+<!-- Top App Bar - Pure & Light -->
+<header class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md pt-safe border-b border-slate-100">
+<div class="h-14 px-5 flex items-center justify-between">
+<div class="flex items-center gap-2"><a href="#" class="inline-flex items-center"><img src="https://lh3.googleusercontent.com/aida/AEtjO1WG3-luJkiCdRczqFwwrmIftya7v0SDAkCtlIHf79w1xsd1myZeApW6WZ2LWTEPSUiSNlwQ8pn9Nm1mAzbWZA6R9Ja2yeg66o2I0UBnOTpXgOWJHxUxMf2_X8FpQ08uHGkwSt78hteKvcOy5vsL0OeKjB1Ss6EwQg29S_gfHDIvD5EXsIkA2GzbX9n551GutVG_sc0j_LlBLQLx2e-VBVqf23F7EIiuJmW8VjdDwSxtoA" alt="KIBAR APP" class="h-8 object-contain"></a></div>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 active:scale-95 transition-transform" type="button">
+<span class="material-symbols-outlined text-[19px]">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center text-xs font-semibold">
+        R
+      </div>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col relative w-full pt-16 pb-24 px-5">
+<div class="flex flex-col w-full max-w-md mx-auto">
+<!-- Header Greeting & Discrete Status -->
+<div class="pt-5 pb-4 flex flex-wrap items-center justify-between gap-3"><div class="min-w-0"><h1 class="text-2xl font-bold font-headline-sm text-slate-900 tracking-tight">Bonjour Richard</h1><div class="flex items-center gap-1.5 mt-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span><span class="text-xs font-medium text-slate-500">Espace KIBAR • Actif</span></div></div><button class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 active:scale-[0.98] text-white text-xs font-semibold shadow-sm transition-all flex-shrink-0" type="button" style="border-bottom: 3.5px solid rgb(30, 58, 138); box-shadow: rgba(37, 99, 235, 0.3) 0px 4px 10px, rgba(255, 255, 255, 0.3) 0px 1px 0px inset; border-radius: 0.75rem;"><span class="material-symbols-outlined text-[16px]">add</span><span class="">Créer un recrutement</span></button></div>
+<!-- Micro Summary Metric Bar (3 Niveaux & Hiérarchie nette) -->
+<div class="my-3 p-3.5 sm:p-4 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.03)] grid grid-cols-3 divide-x divide-slate-100 text-center" style="border-width: 1px 1px 3px; border-style: solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(148, 163, 184); border-image: none; box-shadow: rgba(15, 23, 42, 0.08) 0px 4px 8px -1px, rgba(255, 255, 255, 0.95) 0px 1px 0px inset; border-radius: 1rem;"><div class="flex flex-col items-center min-w-0 px-1"><span class="text-2xl font-bold text-slate-900 font-headline-sm tracking-tight leading-none">3</span><span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider mt-1.5 truncate w-full">Actifs</span></div><div class="flex flex-col items-center min-w-0 px-1"><span class="text-2xl font-bold text-slate-900 font-headline-sm tracking-tight leading-none">175</span><span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider mt-1.5 truncate w-full">Candidats</span></div><div class="flex flex-col items-center min-w-0 px-1"><span class="text-2xl font-bold text-blue-600 font-headline-sm tracking-tight leading-none">12</span><span class="text-[11px] font-medium text-slate-400 uppercase tracking-wider mt-1.5 truncate w-full">Retenus</span></div></div>
+<!-- Section Title -->
+<div class="pt-5 pb-3 flex items-center justify-between">
+<h2 class="text-base font-bold text-slate-900 tracking-tight">Mes recrutements</h2>
+<button class="text-xs font-medium text-slate-500 hover:text-slate-800 flex items-center gap-1" type="button">
+<span class="">Filtrer</span>
+<span class="material-symbols-outlined text-[15px]">tune</span>
+</button>
+</div>
+<!-- Recruitment Cards Stack -->
+<div class="flex flex-col gap-3"><!-- Card 1: 20 agents commerciaux -->
+<div class="p-4 rounded-xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-slate-300 transition-colors w-full min-w-0" style="border-width: 1px 1px 3px; border-style: solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(148, 163, 184); border-image: none; box-shadow: rgba(15, 23, 42, 0.08) 0px 4px 8px -1px, rgba(255, 255, 255, 0.95) 0px 1px 0px inset; border-radius: 1rem;">
+<div class="flex items-start justify-between gap-3">
+<div class="min-w-0 flex-1">
+<h3 class="text-base font-semibold text-slate-900 tracking-tight break-words">20 agents commerciaux</h3>
+<div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-slate-500">
+<span class="inline-flex items-center gap-1 font-medium text-emerald-700 flex-shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
+Actif
+</span>
+<span class="text-slate-300">•</span>
+<span class="inline-flex items-center gap-1 flex-shrink-0">
+<span class="material-symbols-outlined text-[13px] text-slate-400">calendar_today</span>
+15 oct.
+</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-lg bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-700 active:scale-95 transition-all flex-shrink-0" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-baseline justify-between gap-2">
+<div class="flex items-baseline gap-1.5 min-w-0">
+<span class="text-xl font-bold text-slate-900 font-headline-sm">128</span>
+<span class="text-xs text-slate-500 truncate">Candidatures</span>
+</div>
+<div class="flex items-baseline gap-1.5 min-w-0">
+<span class="text-xl font-bold text-slate-900 font-headline-sm">42</span>
+<span class="text-xs text-slate-500 truncate">Retenus</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Stage Communication Digitale -->
+<div class="p-4 rounded-xl bg-white border border-slate-200/90 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-slate-300 transition-colors w-full min-w-0" style="border-width: 1px 1px 3px; border-style: solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(148, 163, 184); border-image: none; box-shadow: rgba(15, 23, 42, 0.08) 0px 4px 8px -1px, rgba(255, 255, 255, 0.95) 0px 1px 0px inset; border-radius: 1rem;">
+<div class="flex items-start justify-between gap-3">
+<div class="min-w-0 flex-1">
+<h3 class="text-base font-semibold text-slate-900 tracking-tight break-words">Stage communication digitale</h3>
+<div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-1 text-xs text-slate-500">
+<span class="inline-flex items-center gap-1 text-slate-500 flex-shrink-0">
+<span class="w-1.5 h-1.5 rounded-full bg-slate-400 flex-shrink-0"></span>
+Terminé
+</span>
+<span class="text-slate-300">•</span>
+<span class="inline-flex items-center gap-1 flex-shrink-0">
+<span class="material-symbols-outlined text-[13px] text-slate-400">calendar_today</span>
+28 sept.
+</span>
+</div>
+</div>
+<button class="w-8 h-8 rounded-lg bg-slate-50 hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-700 active:scale-95 transition-all flex-shrink-0" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-baseline justify-between gap-2">
+<div class="flex items-baseline gap-1.5 min-w-0">
+<span class="text-xl font-bold text-slate-900 font-headline-sm">47</span>
+<span class="text-xs text-slate-500 truncate">Candidatures</span>
+</div>
+<div class="flex items-baseline gap-1.5 min-w-0">
+<span class="text-xl font-bold text-slate-900 font-headline-sm">2</span>
+<span class="text-xs text-slate-500 truncate">Retenus</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Brouillon Technicien Support -->
+<div class="p-4 rounded-xl bg-white border border-dashed border-slate-200 hover:border-slate-300 transition-colors w-full min-w-0" style="border-width: 1px 1px 3px; border-style: solid; border-color: rgb(203, 213, 225) rgb(203, 213, 225) rgb(148, 163, 184); border-image: none; box-shadow: rgba(15, 23, 42, 0.08) 0px 4px 8px -1px, rgba(255, 255, 255, 0.95) 0px 1px 0px inset; border-radius: 1rem;">
+<div class="flex flex-wrap items-center justify-between gap-3">
+<div class="min-w-0 flex-1">
+<h3 class="text-base font-medium text-slate-700 tracking-tight break-words">Technicien Support</h3>
+<div class="flex flex-wrap items-center gap-2 mt-1 text-xs text-slate-400">
+<span class="">Brouillon</span>
+<span class="">•</span>
+<span class="">Étape 2/3</span>
+</div>
+</div>
+<button class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 active:scale-95 transition-all flex-shrink-0" type="button" style="border-bottom: 3.5px solid rgb(30, 58, 138); box-shadow: rgba(37, 99, 235, 0.3) 0px 4px 10px, rgba(255, 255, 255, 0.3) 0px 1px 0px inset; border-radius: 0.75rem;">
+<span class="">Reprendre</span>
+<span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+</button>
+</div>
+</div></div>
+</div>
+</main>
+<!-- Bottom Navigation - Minimalist & Refined -->
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-white/95 backdrop-blur-md border-t border-slate-100">
+<div class="flex items-center justify-around h-14 max-w-md mx-auto px-4">
+<!-- Recrutements (Active) -->
+<a aria-current="page" class="flex flex-col items-center justify-center text-blue-600 font-medium py-1 px-3 transition-colors" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span class="text-[11px] mt-1 font-semibold">Recrutements</span>
+</a>
+<!-- Candidatures -->
+<a class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-600 font-medium py-1 px-3 transition-colors relative" href="#">
+<div class="relative">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span class="absolute -top-0.5 -right-1 w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+</div>
+<span class="text-[11px] mt-1">Candidatures</span>
+</a>
+<!-- Profil -->
+<a class="flex flex-col items-center justify-center text-slate-400 hover:text-slate-600 font-medium py-1 px-3 transition-colors" href="#">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+<span class="text-[11px] mt-1">Profil</span>
+</a>
+</div>
+</nav>
+
+
+</body></html>

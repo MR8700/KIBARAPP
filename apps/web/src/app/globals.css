@@ -1,0 +1,12 @@
+@tailwind base; @tailwind components; @tailwind utilities;
+body { @apply bg-subtle text-ink font-body antialiased; overflow-x: hidden; font-size: 16px; }
+:focus-visible { outline: 3px solid #93c5fd; outline-offset: 2px; border-radius: 0.5rem; }
+button, a, input, select, textarea { -webkit-tap-highlight-color: transparent; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; } }
+.btn { @apply inline-flex min-h-[48px] items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-[15px] font-semibold text-white active:scale-[0.98] transition disabled:opacity-50 whitespace-nowrap; border-bottom: 3px solid #1e3a8a; }
+.ms { font-family: 'Material Symbols Outlined'; font-weight: 400; font-style: normal; line-height: 1; display: inline-block; letter-spacing: normal; text-transform: none; white-space: nowrap; font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; }
+.field-k { @apply w-full rounded-xl border border-[#dbe4f5] bg-[#eff4ff] px-4 py-3 text-base text-ink outline-none focus:border-primary; border-bottom: 3px solid #c3cde3; }
+.card-k { @apply min-w-0 rounded-2xl border border-slate-300 bg-white p-4; border-bottom-width: 3px; border-bottom-color: #94a3b8; box-shadow: 0 4px 8px -1px rgba(15,23,42,.08), inset 0 1px 0 rgba(255,255,255,.95); }
+.card { @apply rounded-2xl border border-line bg-white p-4 min-w-0; border-bottom-width: 3px; }
+
+@media print { @page { size: A4 landscape; margin: 12mm; } body { background: #fff; } thead { display: table-header-group; } }

@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.local
+scripts/deploy/.deploy.env
+scripts/deploy/.deploy.env.*
+*.key
+*.pem
+*.cert
+*.crt
+
+# Build outputs
+dist/
+.next/
+out/
+build/
+*.tsbuildinfo
+
+# Test and coverage
+coverage/
+.nyc_output/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# Backups and temporary files
+backups/
+*.dump
+tmp/
+temp/
+*.zip
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,49 @@
+# fly.toml - Configuration Fly.io pour KIBAR API
+app = "kibar-api"
+primary_region = "cdg"
+
+[build]
+  dockerfile = "apps/api/Dockerfile"
+
+# Commande de release exécutée automatiquement avant chaque déploiement (bloquante si échec)
+[deploy]
+  release_command = "npx prisma migrate deploy --schema=apps/api/prisma/schema.prisma"
+  strategy = "rolling"
+
+[env]
+  NODE_ENV = "production"
+  PORT = "4000"
+  RP_NAME = "KIBAR"
+  CLAMAV_HOST = "kibar-clamd.internal"
+  CLAMAV_PORT = "3310"
+
+[http_service]
+  internal_port = 4000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 2
+
+  [http_service.concurrency]
+    type = "requests"
+    soft_limit = 200
+    hard_limit = 300
+
+  [[http_service.checks]]
+    interval = "15s"
+    timeout = "3s"
+    grace_period = "5s"
+    method = "GET"
+    path = "/health"
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/ready"
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+  cpus = 1

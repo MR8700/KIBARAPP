@@ -1,0 +1,67 @@
+name: CD - Production Deployment
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-prod:
+    name: Production Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup Node.js LTS
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4.1.0
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      # 1. Migrations Prisma de Production
+      - name: Run Prisma Production Migrations
+        env:
+          DATABASE_URL: ${{ secrets.PROD_MIGRATION_DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.PROD_MIGRATION_DIRECT_URL }}
+        run: |
+          npx prisma migrate deploy --schema=apps/api/prisma/schema.prisma
+
+      # 2. Déploiement de l'API sur Fly.io
+      - name: Setup Flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@df3e1a6a7077e23b10b0e50f3b92f75a9e3381e0 # v1.5
+      
+      - name: Deploy API to Fly.io
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        run: |
+          flyctl deploy --app kibar-api \
+            --strategy rolling \
+            --ha=true \
+            --wait-timeout 300
+
+      # 3. Déploiement Web sur Vercel
+      - name: Deploy Frontend to Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN
+          npx vercel build --prod --token=$VERCEL_TOKEN
+          npx vercel deploy --prebuilt --prod --token=$VERCEL_TOKEN
+
+      # 4. Smoke tests post-déploiement
+      - name: Run Post-Deploy Smoke Tests
+        env:
+          API_ORIGIN: https://api.kibar.app
+          WEB_ORIGIN: https://app.kibar.app
+        run: |
+          bash scripts/deploy/smoke-test.sh

@@ -1,0 +1,322 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+enum OrgRole {
+  ADMIN
+  RECRUTEUR
+  VALIDATEUR
+  CONSULTANT
+}
+enum RecruitmentStatus {
+  DRAFT
+  PREVIEW
+  ACTIVE
+  PAUSED
+  CLOSED
+  ARCHIVED
+}
+enum ApplicationStatus {
+  NEW
+  REVIEWING
+  SELECTED
+  REJECTED
+  WAITING
+}
+
+// ---------- Auth (device-bound, aucun mot de passe) ----------
+model User {
+  id          String   @id @default(uuid())
+  publicId    String   @unique
+  displayName String
+  phone       String?
+  email       String?
+  status      UserStatus @default(PENDING)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  devices     Device[]
+  credentials Credential[]
+  sessions    Session[]
+  recoveryCodes RecoveryCode[]
+  memberships OrganizationMember[]
+  @@index([status, createdAt])
+}
+model Device {
+  id             String   @id @default(uuid())
+  userId         String
+  devicePublicId String   @unique
+  deviceName     String
+  platform       String
+  lastSeenAt     DateTime?
+  createdAt      DateTime @default(now())
+  revokedAt      DateTime?
+  user           User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  credentials    Credential[]
+  sessions       Session[]
+  @@index([userId])
+  @@index([userId, revokedAt])
+}
+model Credential {
+  id           String   @id @default(uuid())
+  userId       String
+  deviceId     String
+  credentialId String   @unique
+  publicKey    Bytes
+  signCount    Int      @default(0)
+  transports   String[]
+  createdAt    DateTime @default(now())
+  lastUsedAt   DateTime?
+  revokedAt    DateTime?
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  device       Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  @@index([userId, revokedAt])
+  @@index([deviceId])
+}
+model Session {
+  id            String   @id @default(uuid())
+  userId        String
+  deviceId      String
+  refreshHash   String   @unique
+  expiresAt     DateTime
+  revokedAt     DateTime?
+  createdAt     DateTime @default(now())
+  user          User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  device        Device @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  @@index([userId, revokedAt])
+  @@index([deviceId])
+  @@index([expiresAt])
+}
+model RecoveryCode {
+  id        String   @id @default(uuid())
+  userId    String
+  codeHash  String   @unique   // SHA-256 d'un code à haute entropie, jamais en clair
+  usedAt    DateTime?
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId, usedAt, revokedAt])
+}
+
+// ---------- Organisations ----------
+model Organization {
+  id        String @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  members      OrganizationMember[]
+  recruitments Recruitment[]
+}
+model OrganizationMember {
+  id     String  @id @default(uuid())
+  userId String
+  orgId  String
+  role   OrgRole
+  createdAt DateTime @default(now())
+  user   User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  org    Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  @@unique([userId, orgId])
+  @@index([orgId])
+}
+
+// ---------- Recrutements & Form Builder ----------
+model Recruitment {
+  id          String @id @default(uuid())
+  orgId       String
+  publicToken String @unique            // opaque, aléatoire, indépendant de l'id
+  title       String
+  description String @default("")
+  posterUrl   String?
+  pdfUrl      String?
+  startsAt    DateTime?
+  endsAt      DateTime?
+  status      RecruitmentStatus @default(DRAFT)
+  draftState  Json    @default("{\"sections\":[]}")   // état autosauvegardé du builder
+  draftVersion Int    @default(0)
+  previewedAt DateTime?                  // preuve du passage par l'aperçu
+  createdBy   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  org         Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  sections    RecruitmentSection[]
+  fields      FormField[]
+  applications Application[]
+  selectionLists SelectionList[]
+  @@index([orgId, status])
+}
+model RecruitmentSection {
+  id String @id @default(uuid())
+  recruitmentId String
+  title String
+  position Int
+  recruitment Recruitment @relation(fields: [recruitmentId], references: [id], onDelete: Cascade)
+  fields FormField[]
+}
+model FormField {
+  id String @id @default(uuid())
+  recruitmentId String
+  sectionId String?
+  key String
+  type String            // text, longtext, number, single, multi, date, file, ...
+  label String
+  required Boolean @default(false)
+  position Int
+  config Json @default("{}")   // allowed_types, max_size, multiple, max_count, ...
+  recruitment Recruitment @relation(fields: [recruitmentId], references: [id], onDelete: Cascade)
+  section RecruitmentSection? @relation(fields: [sectionId], references: [id], onDelete: SetNull)
+  options FieldOption[]
+  conditions FieldCondition[]
+  answers ApplicationAnswer[]
+  @@unique([recruitmentId, key])
+}
+model FieldOption {
+  id String @id @default(uuid())
+  fieldId String
+  label String
+  value String
+  position Int
+  field FormField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+}
+model FieldCondition {
+  id String @id @default(uuid())
+  fieldId String
+  dependsOnKey String
+  operator String
+  value Json
+  field FormField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Candidatures ----------
+model Application {
+  id String @id @default(uuid())
+  recruitmentId String
+  reference String @unique          // CAND-2026-008721
+  status ApplicationStatus @default(NEW)
+  submittedAt DateTime @default(now())
+  recruitment Recruitment @relation(fields: [recruitmentId], references: [id], onDelete: Cascade)
+  answers ApplicationAnswer[]
+  files ApplicationFile[]
+  history ApplicationStatusHistory[]
+  @@index([recruitmentId, status])
+}
+model ApplicationAnswer {
+  id String @id @default(uuid())
+  applicationId String
+  fieldId String
+  value Json
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  field FormField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+  @@unique([applicationId, fieldId])
+}
+model ApplicationFile {
+  id String @id @default(uuid())
+  applicationId String
+  fieldKey String
+  name String @default("fichier")
+  storageKey String
+  mime String
+  size Int
+  scanStatus String @default("PENDING")
+  createdAt DateTime @default(now())
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  @@index([applicationId])
+  @@index([storageKey])
+  @@index([scanStatus])
+}
+model ApplicationStatusHistory {
+  id String @id @default(uuid())
+  applicationId String
+  status ApplicationStatus
+  actorId String?
+  at DateTime @default(now())
+  application Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  @@index([applicationId])
+}
+
+// ---------- Sélection, filtres, divers (phases 13-17) ----------
+model SelectionList {
+  id String @id @default(uuid())
+  recruitmentId String
+  name String
+  recruitment Recruitment @relation(fields: [recruitmentId], references: [id], onDelete: Cascade)
+  columns SelectionListColumn[]
+  @@unique([recruitmentId, name])
+}
+model SelectionListColumn {
+  id String @id @default(uuid())
+  listId String
+  fieldKey String
+  position Int
+  visible Boolean @default(true)
+  list SelectionList @relation(fields: [listId], references: [id], onDelete: Cascade)
+  @@unique([listId, fieldKey])
+}
+model FilterGroup {
+  id String @id @default(uuid())
+  recruitmentId String
+  parentId String?
+  op String @default("AND")
+  negate Boolean @default(false)
+  conditions FilterCondition[]
+}
+model FilterCondition {
+  id String @id @default(uuid())
+  groupId String
+  fieldKey String
+  operator String
+  value Json
+  group FilterGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+}
+model Media {
+  id String @id @default(uuid())
+  orgId String
+  storageKey String
+  mime String
+  size Int
+  createdAt DateTime @default(now())
+  @@index([orgId])
+}
+model Notification {
+  id String @id @default(uuid())
+  userId String
+  type String
+  payload Json
+  readAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([userId, readAt])
+  @@index([createdAt])
+}
+model AuditLog {
+  id String @id @default(uuid())
+  userId String?
+  orgId String?
+  action String
+  meta Json @default("{}")
+  at DateTime @default(now())
+  @@index([orgId, at])
+}
+
+/// Fichier envoyé par un candidat avant la soumission définitive (rattaché à l'application au submit).
+model PendingUpload {
+  id String @id @default(uuid())
+  recruitmentId String
+  fieldKey String
+  name String
+  storageKey String
+  mime String
+  size Int
+  scanStatus String
+  createdAt DateTime @default(now())
+  @@index([recruitmentId])
+  @@index([createdAt])
+  @@index([scanStatus])
+  @@index([storageKey])
+}

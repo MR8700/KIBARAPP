@@ -1,0 +1,23 @@
+# fly.toml - Daemon ClamAV Privé (Réseau interne 6PN uniquement)
+app = "kibar-clamd"
+primary_region = "cdg"
+
+[build]
+  image = "clamav/clamav:1.4"
+
+[env]
+  CLAMAV_NO_FRESHCLAMD = "false"
+  FRESHCLAM_CHECKS = "12"
+
+# Aucun service public [http_service] ou [services] avec ports externes !
+# Le service n'est accessible que par son DNS interne Fly : kibar-clamd.internal:3310
+
+[mounts]
+  source = "clamdb"
+  destination = "/var/lib/clamav"
+  initial_size = "5gb"
+
+[[vm]]
+  size = "shared-cpu-2x"
+  memory = "2048mb"
+  cpus = 2

@@ -1,0 +1,12 @@
+{
+  "name": "kibar",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "api": "npm -w apps/api run start:dev",
+    "web": "npm -w apps/web run dev",
+    "db": "docker compose up -d db redis minio clamav"
+  }
+}
