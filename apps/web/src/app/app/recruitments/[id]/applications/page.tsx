@@ -381,6 +381,7 @@ function Applications() {
         variant="cand"
         active="cand"
         candidaturesHref={`/app/recruitments/${id}/applications?org=${org}`}
+        selectedHref={`/app/recruitments/${id}/selected?org=${org}`}
         statsHref={`/app/recruitments/${id}/stats?org=${org}`}
       />
     </>

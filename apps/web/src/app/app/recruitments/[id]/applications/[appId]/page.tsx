@@ -7,6 +7,8 @@ import { authApi } from '@/lib/session';
 import { ASTATUS, fmt, show } from '@/lib/apps';
 import FileViewer from '@/components/FileViewer';
 import { emitStateChange, invalidateCache } from '@/lib/cache';
+import BottomNav from '@/components/BottomNav';
+import FluidBackground from '@/components/FluidBackground';
 
 function Dossier() {
   const { id, appId } = useParams<{ id: string; appId: string }>();
@@ -88,7 +90,9 @@ function Dossier() {
   const s = ASTATUS[a.status];
 
   return (
-    <main className="mx-auto max-w-md px-5 pb-32 pt-6">
+    <>
+      <FluidBackground />
+      <main className="relative z-10 mx-auto max-w-md px-5 pb-36 pt-6">
       <Link
         href={`/app/recruitments/${id}/applications?org=${org}`}
         className="inline-flex items-center gap-1 text-sm font-semibold text-slate-500 hover:text-slate-800 transition"
@@ -252,6 +256,15 @@ function Dossier() {
         )}
       </div>
     </main>
+
+    <BottomNav
+      variant="cand"
+      active="cand"
+      candidaturesHref={`/app/recruitments/${id}/applications?org=${org}`}
+      selectedHref={`/app/recruitments/${id}/selected?org=${org}`}
+      statsHref={`/app/recruitments/${id}/stats?org=${org}`}
+    />
+  </>
   );
 }
 

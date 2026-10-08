@@ -20,8 +20,31 @@ button, a, input, select, textarea {
   -webkit-tap-highlight-color: transparent;
 }
 
-a, button {
+/* Suppression absolue et inconditionnelle de tout soulignement */
+*,
+*::before,
+*::after {
   text-decoration: none !important;
+  text-decoration-line: none !important;
+}
+
+a,
+a:hover,
+a:focus,
+a:active,
+a:visited,
+button,
+button:hover,
+button:focus,
+button:active,
+[role="button"],
+.btn,
+.btn *,
+.btn-secondary,
+.btn-secondary * {
+  text-decoration: none !important;
+  text-decoration-line: none !important;
+  text-decoration-skip-ink: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
