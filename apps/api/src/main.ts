@@ -78,9 +78,9 @@ async function bootstrap() {
   app.enableShutdownHooks();
 
   const port = cfg.PORT;
-  const server = await app.listen(port);
+  const server = await app.listen(port, '0.0.0.0');
 
-  console.log(`[KIBAR API] Démarrée sur le port ${port} en mode ${cfg.NODE_ENV}`);
+  console.log(`[KIBAR API] Démarrée sur le port ${port} (0.0.0.0) en mode ${cfg.NODE_ENV}`);
 
   // Gestion des signaux de terminaison
   const handleSignal = (signal: string) => {

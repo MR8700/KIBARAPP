@@ -13,6 +13,16 @@ export class HealthController {
     private readonly storage: StorageService,
   ) {}
 
+  @Get()
+  root(@Res() res: Response) {
+    return res.status(HttpStatus.OK).json({
+      name: 'KIBAR API',
+      status: 'running',
+      version: '1.0.0',
+      timestamp: new Date().toISOString(),
+    });
+  }
+
   @Get('health')
   health(@Res() res: Response) {
     return res.status(HttpStatus.OK).json({
@@ -21,6 +31,7 @@ export class HealthController {
       timestamp: new Date().toISOString(),
     });
   }
+
 
   @Get('ready')
   async ready(@Res() res: Response) {
