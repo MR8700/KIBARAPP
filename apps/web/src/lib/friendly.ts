@@ -4,6 +4,7 @@ export function friendly(e: any): string {
   if (n === 'NotAllowedError') return "Vous avez annulé, ou le téléphone n'a pas pu confirmer. Réessayez et validez avec votre empreinte, votre visage ou le code de votre écran.";
   if (n === 'InvalidStateError') return "Ce téléphone est déjà enregistré. Choisissez « J'ai déjà un espace ».";
   if (n === 'NotSupportedError' || n === 'SecurityError') return "Ce navigateur ne permet pas la sécurisation. Essayez avec Chrome ou Safari à jour.";
-  if (/failed to fetch|network|load failed/i.test(m)) return 'Pas de connexion Internet. Vérifiez votre réseau, puis réessayez.';
+  if (/failed to fetch|network|load failed/i.test(m)) return 'Impossible de joindre le serveur KIBAR (API non joignable). Veuillez vérifier que le serveur est démarré ou réessayer dans un instant.';
   return m || 'Un problème est survenu. Réessayez dans un instant.';
 }
+
