@@ -20,6 +20,7 @@ export class RedisService implements OnModuleDestroy {
   // Fallbacks en mémoire UNIQUEMENT hors production
   private memoryChallenges = new Map<string, ChallengeEntry>();
   private memoryRateLimits = new Map<string, { n: number; reset: number }>();
+  private memoryValues = new Map<string, { val: string; exp?: number }>();
 
   constructor() {
     const url = process.env.REDIS_URL;
@@ -136,6 +137,42 @@ export class RedisService implements OnModuleDestroy {
         throw new HttpException('Trop de requêtes, veuillez réessayer ultérieurement.', 429);
       }
     }
+  }
+
+  // ---- Méthodes génériques de stockage (avec TTL) ----
+
+  async get(key: string): Promise<string | null> {
+    if (this.client) {
+      return this.client.get(key);
+    }
+    const entry = this.memoryValues.get(key);
+    if (!entry) return null;
+    if (entry.exp && entry.exp < Date.now()) {
+      this.memoryValues.delete(key);
+      return null;
+    }
+    return entry.val;
+  }
+
+  async set(key: string, value: string, ttlSeconds?: number): Promise<void> {
+    if (this.client) {
+      if (ttlSeconds) {
+        await this.client.set(key, value, 'EX', ttlSeconds);
+      } else {
+        await this.client.set(key, value);
+      }
+    } else {
+      this.memoryValues.set(key, { val: value, exp: ttlSeconds ? Date.now() + ttlSeconds * 1000 : undefined });
+    }
+  }
+
+  async incr(key: string): Promise<number> {
+    if (this.client) {
+      return this.client.incr(key);
+    }
+    const cur = Number((await this.get(key)) || 0) + 1;
+    await this.set(key, String(cur));
+    return cur;
   }
 
   // ---- Health Check pour /ready ----

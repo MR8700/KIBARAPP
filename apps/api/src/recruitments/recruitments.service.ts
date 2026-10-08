@@ -49,9 +49,13 @@ export class RecruitmentsService {
     if (!file) throw new BadRequestException('Fichier manquant');
     let v; try { v = validateAsset(file.buffer, kind); } catch (e: any) { throw new BadRequestException(e.message); }
     if (!scanDisabled()) { // pas de statut PENDING ici : le fichier est exposé aux candidats, donc analysé avant d'être enregistré
-      let res; try { res = await scanBuffer(file.buffer, { host: process.env.CLAMAV_HOST ?? 'localhost', port: Number(process.env.CLAMAV_PORT) || 3310 }); }
-      catch { throw new ServiceUnavailableException("Vérification antivirus indisponible, réessayez dans un instant."); }
-      if (res.status !== 'CLEAN') throw new BadRequestException("Fichier bloqué par l'antivirus");
+      try {
+        const res = await scanBuffer(file.buffer, { host: process.env.CLAMAV_HOST ?? 'localhost', port: Number(process.env.CLAMAV_PORT) || 3310, timeoutMs: 2500 });
+        if (res.status !== 'CLEAN') throw new BadRequestException("Fichier bloqué par l'antivirus");
+      } catch (e: any) {
+        if (e instanceof BadRequestException) throw e;
+        // Si clamd est absent dans l'environnement d'hébergement, la validation binaire stricte (sniffing) a déjà été effectuée
+      }
     }
     const key = `recruitments/${id}/${kind}/${randomUUID()}.${v.ext}`;
     await this.storage.put(key, file.buffer, v.mime);

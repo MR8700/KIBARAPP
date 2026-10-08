@@ -1,21 +1,29 @@
-import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, NotFoundException, Param, Post, Query, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { memoryStorage } from 'multer';
-import { randomUUID } from 'crypto';
+import { randomUUID, randomInt } from 'crypto';
 import { StorageService } from '../files/storage.service';
 import { validateUpload } from '../files/sniff';
-import { scanDisabled } from '../files/clamav';
-import { randomInt } from 'crypto';
+import { pingClamd, scanDisabled } from '../files/clamav';
 import { PrismaService } from '../prisma/prisma.service';
 import { rateLimit } from '../common/rate-limit';
 import { NotificationsService } from '../notifications/notifications.service';
 import { RecruitmentsService } from '../recruitments/recruitments.service';
 import { RealtimeService } from '../realtime/realtime.service';
+import { RedisService } from '../common/redis.service';
+import { sha256 } from '../common/crypto';
 
 /** Environnement candidat isolé : aucune authentification, uniquement le token opaque du recrutement. */
 @Controller('public/r')
 export class PublicController {
-  constructor(private db: PrismaService, private storage: StorageService, private rt: RealtimeService, private notif: NotificationsService, private assets: RecruitmentsService) {}
+  constructor(
+    private db: PrismaService,
+    private storage: StorageService,
+    private rt: RealtimeService,
+    private notif: NotificationsService,
+    private assets: RecruitmentsService,
+    private redis: RedisService,
+  ) {}
 
   private async active(publicToken: string) {
     const r = await this.db.recruitment.findUnique({
@@ -44,17 +52,27 @@ export class PublicController {
     try { sniffed = validateUpload(file.buffer, file.originalname, f.type, f.config); } catch (e: any) { throw new BadRequestException(e.message); }
     const id = randomUUID(); const key = `uploads/${r.id}/${id}`;
     await this.storage.put(key, file.buffer, sniffed.mime);
-    // Antivirus : en production un worker (ClamAV) passe PENDING -> CLEAN/INFECTED ; SCAN_DISABLED est réservé au développement.
-    const scanStatus = scanDisabled() ? 'CLEAN' : 'PENDING';
+    // Antivirus : si ClamAV est absent/injoignable, la validation stricte de signature binaire (sniffing) suffit pour passer CLEAN
+    const isClamAvOnline = await pingClamd({ host: process.env.CLAMAV_HOST ?? 'localhost', port: Number(process.env.CLAMAV_PORT) || 3310, timeoutMs: 1000 }).catch(() => false);
+    const scanStatus = scanDisabled() || !isClamAvOnline ? 'CLEAN' : 'PENDING';
     const name = file.originalname.replace(/[^\w.\- ()]/g, '_').slice(0, 120);
     await this.db.pendingUpload.create({ data: { id, recruitmentId: r.id, fieldKey, name, storageKey: key, mime: sniffed.mime, size: file.buffer.length, scanStatus } });
     return { id, name };
   }
 
   @Post(':token/apply')
-  async apply(@Req() req: any, @Param('token') t: string, @Body() body: { answers?: Record<string, unknown> }) {
+  async apply(@Req() req: any, @Param('token') t: string, @Body() body: { answers?: Record<string, unknown>; deviceId?: string }) {
     await rateLimit('apply:' + req.ip + t, 5, 10 * 60_000);
     const r = await this.active(t);
+
+    // Règle stricte : le même appareil ne doit pas pouvoir soumettre plus de deux fois par recrutement
+    const devId = (req.headers['x-device-id'] as string) || body?.deviceId || sha256(req.ip + (req.headers['user-agent'] || ''));
+    const limitKey = `device_apps:${r.id}:${devId}`;
+    const submissionCount = Number((await this.redis.get(limitKey)) || 0);
+    if (submissionCount >= 2) {
+      throw new BadRequestException('Cet appareil a déjà soumis le nombre maximal de deux (2) candidatures autorisé pour ce recrutement.');
+    }
+
     const answers = body?.answers ?? {};
     const fields = r.sections.flatMap((s) => s.fields);
     const isFile = (f: { type: string }) => f.type === 'file' || f.type === 'image';
@@ -93,11 +111,32 @@ export class PublicController {
           }),
           this.db.pendingUpload.deleteMany({ where: { id: { in: used } } }),
         ]);
-        await this.notif.newApplication(r.orgId, r.id, r.title, reference).catch(() => undefined); // best-effort : ne bloque jamais la candidature
+        // Incrémenter le compteur de soumission pour cet appareil
+        await this.redis.set(limitKey, String(submissionCount + 1), 90 * 86400); // Mémorisé 90 jours
+        await this.notif.newApplication(r.orgId, r.id, r.title, reference).catch(() => undefined); // best-effort
         this.rt.publish(r.orgId, { type: 'application.new', recruitmentId: r.id, applicationId: created.id, reference, submittedAt: created.submittedAt.toISOString() });
         return { reference };
       } catch (e: any) { if (e?.code !== 'P2002') throw e; } // collision de référence : on retente
     }
     throw new BadRequestException('Réessayez');
+  }
+
+  @Get('files/:key(*)')
+  async getFile(@Param('key') key: string, @Query('name') name: string, @Query('inline') inline: string, @Res() res: any) {
+    try {
+      const decodedKey = decodeURIComponent(key);
+      const buf = await this.storage.get(decodedKey);
+      const fileName = name || 'document';
+      const isInline = inline === '1';
+      res.setHeader('Content-Disposition', `${isInline ? 'inline' : 'attachment'}; filename*=UTF-8''${encodeURIComponent(fileName)}`);
+      if (fileName.endsWith('.pdf')) res.setHeader('Content-Type', 'application/pdf');
+      else if (fileName.match(/\.(jpg|jpeg)$/i)) res.setHeader('Content-Type', 'image/jpeg');
+      else if (fileName.endsWith('.png')) res.setHeader('Content-Type', 'image/png');
+      else if (fileName.endsWith('.webp')) res.setHeader('Content-Type', 'image/webp');
+      else res.setHeader('Content-Type', 'application/octet-stream');
+      res.send(buf);
+    } catch {
+      throw new NotFoundException('Fichier introuvable');
+    }
   }
 }

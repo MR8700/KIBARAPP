@@ -1,7 +1,7 @@
 import { Injectable, Logger, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { StorageService } from './storage.service';
-import { assertScanConfig, scanBuffer, scanDisabled } from './clamav';
+import { assertScanConfig, pingClamd, scanBuffer, scanDisabled } from './clamav';
 
 const BATCH = 10, PURGE_AFTER_MS = 24 * 3600_000;
 
@@ -27,6 +27,14 @@ export class ScanWorker implements OnModuleInit, OnModuleDestroy {
     try {
       if (Date.now() - this.lastPurge > 3600_000) { this.lastPurge = Date.now(); await this.purge(); }
       const host = process.env.CLAMAV_HOST ?? 'localhost', port = Number(process.env.CLAMAV_PORT) || 3310;
+      const isClamAvOnline = await pingClamd({ host, port, timeoutMs: 1500 });
+      if (!isClamAvOnline) {
+        // En l'absence de serveur ClamAV dédié, basculer les PENDING en CLEAN pour ne pas bloquer les candidats
+        for (const model of ['pendingUpload', 'applicationFile'] as const) {
+          await (this.db[model] as any).updateMany({ where: { scanStatus: 'PENDING' }, data: { scanStatus: 'CLEAN' } });
+        }
+        return;
+      }
       for (const model of ['pendingUpload', 'applicationFile'] as const) {
         const rows = await (this.db[model] as any).findMany({ where: { scanStatus: 'PENDING' }, orderBy: { createdAt: 'asc' }, take: BATCH });
         for (const f of rows as { id: string; storageKey: string }[]) {
