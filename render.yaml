@@ -9,6 +9,14 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: DATABASE_URL
+        value: postgresql://neondb_owner:npg_5CnK7surWlXp@ep-shiny-frost-b88wiqiz-pooler.c-14.us-east-1.aws.neon.tech/neondb?channel_binding=require&sslmode=require
+      - key: DIRECT_URL
+        value: postgresql://neondb_owner:npg_5CnK7surWlXp@ep-shiny-frost-b88wiqiz.c-14.us-east-1.aws.neon.tech/neondb?channel_binding=require&sslmode=require
+      - key: REDIS_URL
+        value: rediss://default:gQAAAAAAAz9HAAIgcDE4ZWQ4OTk5OWM2MjQ0NDZiYjcyNjE4MTRkNzUyZjJjYw@renewing-unicorn-212807.upstash.io:6379
+      - key: JWT_SECRET
+        value: kibar-prod-jwt-secret-ultra-secure-key-256bits-2026
       - key: RP_ID
         value: kibarapps.vercel.app
       - key: RP_NAME
