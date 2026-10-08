@@ -41,7 +41,7 @@ export default function Welcome() {
     <div className="mt-auto flex flex-col gap-3 pt-8">
       <Link href="/enroll" className="btn !py-4 text-base">Créer mon espace gratuitement<span className="ms text-[20px]">arrow_forward</span></Link>
       <Link href="/login" className="flex min-h-[48px] items-center justify-center rounded-xl border border-slate-200 bg-white text-[15px] font-semibold text-primary">J'ai déjà un espace</Link>
-      <Link href="/recover" className="py-2 text-center text-sm font-medium text-slate-500 underline underline-offset-4">Téléphone perdu ou changé ?</Link>
+      <Link href="/recover" className="py-2 text-center text-sm font-medium text-slate-500 hover:text-slate-800 transition">Téléphone perdu ou changé ?</Link>
       <p className="flex items-center justify-center gap-1.5 text-xs text-slate-500"><span className="ms text-[16px] text-emerald-600">lock</span>Aucun mot de passe à retenir : votre téléphone suffit</p></div>
   </main>);
 }

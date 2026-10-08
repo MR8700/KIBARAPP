@@ -8,7 +8,7 @@ import { RecruitmentsService } from './recruitments.service';
 
 const info = z.object({
   title: z.string().min(3).max(150), description: z.string().max(5000).optional(),
-  startsAt: z.coerce.date().optional(), endsAt: z.coerce.date().optional(),
+  startsAt: z.coerce.date().optional().nullable(), endsAt: z.coerce.date().optional().nullable(),
 });
 
 @UseGuards(AuthGuard, OrgGuard)

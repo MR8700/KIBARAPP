@@ -26,8 +26,10 @@ export async function authDownload(path: string, filename: string) {
   if (!r.ok) throw new Error((await r.json().catch(() => ({}))).message ?? 'Export impossible');
   const url = URL.createObjectURL(await r.blob()); const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url);
 }
-export const currentOrg = () => localStorage.getItem('kibar.org') ?? '';
-export const setCurrentOrg = (id: string) => localStorage.setItem('kibar.org', id);
+export const currentOrg = () => (typeof window !== 'undefined' ? localStorage.getItem('kibar.org') ?? '' : '');
+export const setCurrentOrg = (id: string) => {
+  if (typeof window !== 'undefined') localStorage.setItem('kibar.org', id);
+};
 
 export const STATUS: Record<string, { label: string; cls: string }> = {
   DRAFT: { label: 'Brouillon', cls: 'bg-slate-100 text-slate-600' },

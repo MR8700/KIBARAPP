@@ -15,7 +15,7 @@ export class RecruitmentsService {
   async list(orgId: string) {
     const rows = await this.db.recruitment.findMany({
       where: { orgId, status: { not: 'ARCHIVED' } }, orderBy: { updatedAt: 'desc' },
-      select: { id: true, title: true, status: true, endsAt: true, publicToken: true, _count: { select: { applications: true } } },
+      select: { id: true, title: true, status: true, startsAt: true, endsAt: true, publicToken: true, _count: { select: { applications: true } } },
     });
     const sel = await this.db.application.groupBy({
       by: ['recruitmentId'], where: { recruitmentId: { in: rows.map((r) => r.id) }, status: 'SELECTED' }, _count: { _all: true },
@@ -24,7 +24,7 @@ export class RecruitmentsService {
     return rows.map((r) => ({ ...r, selectedCount: m.get(r.id) ?? 0 }));
   }
 
-  create(orgId: string, userId: string, d: { title: string; description?: string; startsAt?: Date; endsAt?: Date }) {
+  create(orgId: string, userId: string, d: { title: string; description?: string; startsAt?: Date | null; endsAt?: Date | null }) {
     return this.db.recruitment.create({ data: { ...d, orgId, createdBy: userId, publicToken: token(24) } });
   }
 

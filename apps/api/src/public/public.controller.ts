@@ -25,27 +25,51 @@ export class PublicController {
     private redis: RedisService,
   ) {}
 
-  private async active(publicToken: string) {
+  private async getRecruitment(publicToken: string) {
     const r = await this.db.recruitment.findUnique({
       where: { publicToken },
       include: { sections: { orderBy: { position: 'asc' }, include: { fields: { orderBy: { position: 'asc' }, include: { options: { orderBy: { position: 'asc' } }, conditions: true } } } } },
     });
-    const now = new Date();
-    if (!r || r.status !== 'ACTIVE' || (r.startsAt && r.startsAt > now) || (r.endsAt && r.endsAt < now)) throw new NotFoundException();
+    if (!r || r.status !== 'ACTIVE') throw new NotFoundException('Ce recrutement n\'est pas disponible.');
     return r;
   }
 
+  private ensureOpen(r: { startsAt: Date | null; endsAt: Date | null }) {
+    const now = new Date();
+    if (r.startsAt && r.startsAt > now) {
+      const dt = r.startsAt.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      throw new BadRequestException(`Les candidatures ne sont pas encore ouvertes. Elles débuteront le ${dt}.`);
+    }
+    if (r.endsAt && r.endsAt < now) {
+      const dt = r.endsAt.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      throw new BadRequestException(`La période de candidature a pris fin le ${dt}.`);
+    }
+  }
+
   @Get(':token') async view(@Param('token') t: string) {
-    const r = await this.active(t);
+    const r = await this.getRecruitment(t);
+    const now = new Date();
+    const isUpcoming = Boolean(r.startsAt && r.startsAt > now);
+    const isExpired = Boolean(r.endsAt && r.endsAt < now);
     const assets = await this.assets.urls(r);
-    return { title: r.title, description: r.description, ...assets, endsAt: r.endsAt, sections: r.sections };
+    return {
+      title: r.title,
+      description: r.description,
+      ...assets,
+      startsAt: r.startsAt,
+      endsAt: r.endsAt,
+      isUpcoming,
+      isExpired,
+      sections: r.sections,
+    };
   }
 
   @Post(':token/upload')
   @UseInterceptors(FileInterceptor('file', { storage: memoryStorage(), limits: { fileSize: 25 * 1024 * 1024, files: 1 } }))
   async upload(@Req() req: any, @Param('token') t: string, @Body('fieldKey') fieldKey: string, @UploadedFile() file?: { buffer: Buffer; originalname: string }) {
     await rateLimit('upload:' + req.ip, 30, 10 * 60_000);
-    const r = await this.active(t);
+    const r = await this.getRecruitment(t);
+    this.ensureOpen(r);
     const f = r.sections.flatMap((s: any) => s.fields).find((x: any) => x.key === fieldKey && (x.type === 'file' || x.type === 'image'));
     if (!f || !file) throw new BadRequestException('Champ ou fichier invalide');
     let sniffed;
@@ -62,8 +86,8 @@ export class PublicController {
 
   @Post(':token/apply')
   async apply(@Req() req: any, @Param('token') t: string, @Body() body: { answers?: Record<string, unknown>; deviceId?: string }) {
-    await rateLimit('apply:' + req.ip + t, 5, 10 * 60_000);
-    const r = await this.active(t);
+    const r = await this.getRecruitment(t);
+    this.ensureOpen(r);
 
     // Règle stricte : le même appareil ne doit pas pouvoir soumettre plus de deux fois par recrutement
     const devId = (req.headers['x-device-id'] as string) || body?.deviceId || sha256(req.ip + (req.headers['user-agent'] || ''));
