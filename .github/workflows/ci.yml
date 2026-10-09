@@ -60,13 +60,13 @@ jobs:
 
       - name: Prisma Client Generation & Schema Check
         run: |
-          npx prisma generate --schema=apps/api/prisma/schema.prisma
+          npm -w apps/api run prisma:gen
 
       - name: Execute Prisma Migration against Test DB
         env:
           DATABASE_URL: postgresql://kibar:kibar_test_password@localhost:5432/kibar_test
         run: |
-          npx prisma migrate deploy --schema=apps/api/prisma/schema.prisma
+          npm -w apps/api exec prisma migrate deploy -- --schema=prisma/schema.prisma
 
       - name: Run API Unit Tests
         env:
