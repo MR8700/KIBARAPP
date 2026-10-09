@@ -5,6 +5,8 @@ import { authApi, currentOrg, setCurrentOrg, STATUS } from '@/lib/session';
 import Logo from '@/components/Logo';
 import BottomNav from '@/components/BottomNav';
 import NotificationBell from '@/components/NotificationBell';
+import DashboardHero from '@/components/DashboardHero';
+import Icon from '@/components/Icon';
 import { freshLabel, useRealtime } from '@/lib/realtime';
 import { getCached, setCached, onStateChange } from '@/lib/cache';
 
@@ -200,25 +202,8 @@ export default function Dashboard() {
       </header>
 
       <main className="mx-auto max-w-md px-5 pb-28 pt-16">
-        <div className="pb-4 pt-5">
-          <h1 className="break-words font-head text-2xl font-bold tracking-tight text-slate-900">
-            {first ? `Bonjour ${first}` : 'Bonjour'}
-          </h1>
-          <div className="mt-1 flex items-center gap-1.5">
-            <span className="h-2 w-2 shrink-0 rounded-full bg-emerald-500 shadow-xs shadow-emerald-500/50" />
-            <span className="truncate text-xs font-medium text-slate-600">
-              Espace {cur?.name} • Actif
-            </span>
-          </div>
-
-          {canCreate && (
-            <Link
-              href="/app/recruitments/new"
-              className="btn mt-3 !rounded-xl !px-4 !py-2.5 text-xs shadow-md shadow-blue-500/20"
-            >
-              <span className="ms text-[16px]">add</span>Créer un recrutement
-            </Link>
-          )}
+        <div className="pt-2">
+          <DashboardHero first={first} orgName={cur?.name} canCreate={canCreate} />
         </div>
 
         {/* Métriques modernes épurées avec teintes délicates */}
@@ -246,11 +231,13 @@ export default function Dashboard() {
               href={`/app/audit?org=${org}`}
               className="flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-900"
             >
-              Filtrer<span className="ms text-[15px]">tune</span>
+              <span>Filtrer</span>
+              <Icon name="tune" size={14} />
             </Link>
           ) : (
             <span className="flex items-center gap-1 text-xs font-medium text-slate-500">
-              Filtrer<span className="ms text-[15px]">tune</span>
+              <span>Filtrer</span>
+              <Icon name="tune" size={14} />
             </span>
           )}
         </div>
@@ -299,9 +286,11 @@ export default function Dashboard() {
                       </div>
                       <Link
                         href={open}
-                        className="inline-flex shrink-0 items-center gap-1 rounded-xl bg-blue-50 px-3.5 py-2 text-xs font-semibold text-blue-700 active:scale-95 transition"
+                        className="inline-flex shrink-0 items-center gap-1 rounded-xl bg-blue-50 px-3.5 py-2 text-xs font-semibold text-blue-700 active:scale-95 transition no-underline"
+                        style={{ textDecoration: 'none' }}
                       >
-                        Reprendre<span className="ms text-[15px]">arrow_forward</span>
+                        <span>Reprendre</span>
+                        <Icon name="arrow_forward" size={14} />
                       </Link>
                     </div>
                   </div>
@@ -332,8 +321,8 @@ export default function Dashboard() {
                           <>
                             <span className="text-slate-300">•</span>
                             <span className="inline-flex shrink-0 items-center gap-1 font-medium text-slate-600">
-                              <span className="ms text-[13px] text-blue-600">calendar_today</span>
-                              {dateLabel}
+                              <Icon name="calendar_today" size={13} className="text-blue-600" />
+                              <span>{dateLabel}</span>
                             </span>
                           </>
                         )}
@@ -342,14 +331,15 @@ export default function Dashboard() {
                     <Link
                       href={open}
                       aria-label={`Ouvrir ${r.title}`}
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-slate-500 hover:bg-blue-50 hover:text-blue-700 active:scale-95 transition"
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-slate-500 hover:bg-blue-50 hover:text-blue-700 active:scale-95 transition no-underline"
+                      style={{ textDecoration: 'none' }}
                     >
-                      <span className="ms text-[18px]">arrow_forward</span>
+                      <Icon name="arrow_forward" size={18} />
                     </Link>
                   </div>
 
                   <div className="mt-4 flex flex-wrap items-baseline justify-between gap-2 border-t border-slate-100 pt-3">
-                    <Link href={open} className="flex min-w-0 items-baseline gap-1.5 hover:text-blue-700">
+                    <Link href={open} className="flex min-w-0 items-baseline gap-1.5 hover:text-blue-700 no-underline" style={{ textDecoration: 'none' }}>
                       <span className="font-head text-xl font-extrabold text-slate-900">
                         {r._count.applications}
                       </span>
@@ -357,7 +347,8 @@ export default function Dashboard() {
                     </Link>
                     <Link
                       href={`/app/recruitments/${r.id}/selected?org=${org}`}
-                      className="flex min-w-0 items-baseline gap-1.5 hover:text-blue-700"
+                      className="flex min-w-0 items-baseline gap-1.5 hover:text-blue-700 no-underline"
+                      style={{ textDecoration: 'none' }}
                     >
                       <span className="font-head text-xl font-extrabold text-blue-700">
                         {r.selectedCount ?? 0}
@@ -369,10 +360,12 @@ export default function Dashboard() {
                   <div className="mt-3 flex items-center justify-between text-xs font-semibold border-t border-slate-50 pt-2.5">
                     {r._count.applications > 0 ? (
                       <Link
-                        className="flex items-center gap-1 text-slate-600 hover:text-slate-900"
+                        className="flex items-center gap-1.5 text-slate-600 hover:text-slate-900 no-underline"
                         href={`/app/recruitments/${r.id}/stats?org=${org}`}
+                        style={{ textDecoration: 'none' }}
                       >
-                        <span className="ms text-[15px] text-blue-600">bar_chart</span>Statistiques
+                        <Icon name="bar_chart" size={15} className="text-blue-600" />
+                        <span>Statistiques</span>
                       </Link>
                     ) : (
                       <span />
@@ -381,17 +374,16 @@ export default function Dashboard() {
                     {r.status === 'ACTIVE' && (
                       <button
                         type="button"
-                        className="inline-flex items-center gap-1 text-blue-700 hover:text-blue-800"
+                        className="inline-flex items-center gap-1.5 text-blue-700 hover:text-blue-800 no-underline"
+                        style={{ textDecoration: 'none' }}
                         onClick={() => {
                           navigator.clipboard.writeText(link(r.publicToken));
                           setCopied(r.id);
                           setTimeout(() => setCopied(''), 1800);
                         }}
                       >
-                        <span className="ms text-[15px]">
-                          {copied === r.id ? 'check' : 'share'}
-                        </span>
-                        {copied === r.id ? 'Lien copié ✓' : 'Partager le lien'}
+                        <Icon name={copied === r.id ? 'check' : 'content_copy'} size={14} />
+                        <span>{copied === r.id ? 'Lien copié ✓' : 'Partager le lien'}</span>
                       </button>
                     )}
                   </div>

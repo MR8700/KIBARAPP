@@ -7,6 +7,7 @@ import { addDevice, logout, sensitive } from '@/lib/passkey';
 import RecoveryCodes from '@/components/RecoveryCodes';
 import BottomNav from '@/components/BottomNav';
 import FluidBackground from '@/components/FluidBackground';
+import Icon from '@/components/Icon';
 
 type Device = { id: string; name: string; platform: string; lastSeenAt: string | null; current: boolean };
 
@@ -83,9 +84,10 @@ function Security() {
       <main className="relative z-10 mx-auto max-w-md px-5 pb-32 pt-6">
         <Link
           href="/app/dashboard"
-          className="inline-flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white/90 px-3.5 py-1.5 text-xs font-semibold text-slate-600 shadow-xs hover:border-slate-300 hover:text-blue-700 active:scale-95 transition"
+          className="inline-flex items-center gap-1.5 rounded-full border border-slate-200/80 bg-white/90 px-3.5 py-1.5 text-xs font-semibold text-slate-600 shadow-xs hover:border-slate-300 hover:text-blue-700 active:scale-95 transition no-underline"
+          style={{ textDecoration: 'none' }}
         >
-          <span className="ms text-[16px]">arrow_back</span>
+          <Icon name="arrow_back" size={16} />
           <span>Recrutements</span>
         </Link>
 
@@ -98,14 +100,14 @@ function Security() {
             role="status"
             className="mt-3 flex items-start gap-2.5 rounded-2xl border border-emerald-200/80 bg-emerald-50/90 p-4 text-xs font-medium text-emerald-800 shadow-xs"
           >
-            <span className="ms text-[20px] text-emerald-600 shrink-0">check_circle</span>
+            <Icon name="check_circle" size={20} className="text-emerald-600 shrink-0" />
             <span>Cet appareil est enregistré. Pensez à générer de nouveaux codes de secours.</span>
           </div>
         )}
 
         {err && (
           <div className="mt-3 flex items-start gap-2.5 rounded-2xl border border-red-200/80 bg-red-50/90 p-4 text-xs font-medium text-red-800 shadow-xs">
-            <span className="ms text-[20px] text-red-600 shrink-0">error</span>
+            <Icon name="error" size={20} className="text-red-600 shrink-0" />
             <span>{err}</span>
           </div>
         )}
@@ -117,7 +119,7 @@ function Security() {
         <ul className="space-y-2.5">
           {!devices ? (
             <li className="card-k text-center text-xs text-slate-500 py-6">
-              <span className="ms animate-spin text-[20px] text-blue-600 inline-block mb-1">sync</span>
+              <Icon name="sync" size={20} className="text-blue-600 inline-block mb-1" />
               <p>Chargement des appareils…</p>
             </li>
           ) : (
@@ -125,11 +127,7 @@ function Security() {
               <li key={d.id} className="card-k flex items-center justify-between gap-3">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-bold text-slate-900 flex items-center gap-2">
-                    <span className="ms text-[18px] text-blue-600 shrink-0">
-                      {d.platform.toLowerCase().includes('mac') || d.platform.toLowerCase().includes('ios')
-                        ? 'phone_iphone'
-                        : 'computer'}
-                    </span>
+                    <Icon name="settings" size={17} className="text-blue-600 shrink-0" />
                     <span className="truncate">{d.name}</span>
                     {d.current && (
                       <span className="rounded-full bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 text-[10.5px] font-bold text-emerald-700 shrink-0">
@@ -144,7 +142,7 @@ function Security() {
                 {!d.current && (
                   <button
                     type="button"
-                    className="shrink-0 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50 active:scale-95 disabled:opacity-50 transition"
+                    className="shrink-0 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50 active:scale-95 disabled:opacity-50 transition no-underline"
                     disabled={busy === d.id}
                     onClick={() => revoke(d)}
                   >
@@ -158,12 +156,12 @@ function Security() {
 
         <button
           type="button"
-          className="mt-3 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl border border-slate-200/80 bg-white/95 px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-xs hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98] transition"
+          className="mt-3 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl border border-slate-200/80 bg-white/95 px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-xs hover:border-slate-300 hover:bg-slate-50 active:scale-[0.98] transition no-underline"
           disabled={busy === 'add'}
           onClick={add}
         >
-          <span className="ms text-[18px] text-blue-600">add_circle</span>
-          {busy === 'add' ? 'Ajout en cours…' : 'Ajouter un appareil'}
+          <Icon name="add_circle" size={18} className="text-blue-600" />
+          <span>{busy === 'add' ? 'Ajout en cours…' : 'Ajouter un appareil'}</span>
         </button>
         <p className="mt-2 text-[11.5px] text-slate-500 leading-relaxed px-1">
           Confirmez avec votre empreinte, votre visage ou votre code ; le navigateur peut proposer d'utiliser un autre téléphone (QR code).
@@ -180,7 +178,7 @@ function Security() {
         ) : (
           <button
             type="button"
-            className="btn w-full"
+            className="btn w-full no-underline"
             disabled={busy === 'codes'}
             onClick={regenerate}
           >
@@ -190,11 +188,11 @@ function Security() {
 
         <button
           type="button"
-          className="mt-8 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl border border-red-200/80 bg-white/90 px-4 py-2.5 text-sm font-semibold text-red-600 shadow-xs hover:bg-red-50 active:scale-[0.98] transition"
+          className="mt-8 flex min-h-[46px] w-full items-center justify-center gap-2 rounded-xl border border-red-200/80 bg-white/90 px-4 py-2.5 text-sm font-semibold text-red-600 shadow-xs hover:bg-red-50 active:scale-[0.98] transition no-underline"
           onClick={out}
         >
-          <span className="ms text-[18px]">logout</span>
-          Se déconnecter de cet appareil
+          <Icon name="logout" size={18} />
+          <span>Se déconnecter de cet appareil</span>
         </button>
       </main>
 

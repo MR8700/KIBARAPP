@@ -1,10 +1,11 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import Icon from './Icon';
 
 export type BottomNavActive = 'rec' | 'cand' | 'selected' | 'stats' | 'profil';
 
-/** Barre de navigation basse moderne, sans aucun soulignement, avec indicateurs et mémorisation contextuelle. */
+/** Barre de navigation basse moderne, sans aucun soulignement, avec icônes SVG instantanées (0 ms) et mémorisation contextuelle. */
 export default function BottomNav({
   active,
   candidaturesHref,
@@ -89,7 +90,7 @@ export default function BottomNav({
               style={linkStyle}
             >
               <span className="relative flex items-center justify-center">
-                <span className="ms text-[20px]">{icon}</span>
+                <Icon name={icon} size={20} className={isOn ? 'text-blue-600' : 'text-slate-500'} />
                 {hasDot && (
                   <span className="absolute -right-1 top-0 h-2 w-2 rounded-full bg-blue-600 ring-2 ring-white" />
                 )}
@@ -115,7 +116,11 @@ export default function BottomNav({
           className={item(active === 'rec')}
           style={linkStyle}
         >
-          <span className="ms text-[22px]">deployed_code</span>
+          <Icon
+            name="deployed_code"
+            size={22}
+            className={active === 'rec' ? 'text-blue-600' : 'text-slate-500'}
+          />
           <span className={lbl(active === 'rec')}>Recrutements</span>
         </Link>
         <Link
@@ -125,7 +130,11 @@ export default function BottomNav({
           style={linkStyle}
         >
           <span className="relative flex items-center justify-center">
-            <span className="ms text-[22px]">groups</span>
+            <Icon
+              name="groups"
+              size={22}
+              className={active === 'cand' ? 'text-blue-600' : 'text-slate-500'}
+            />
             {dot && (
               <span className="absolute -right-1 top-0 h-2 w-2 rounded-full bg-blue-600 ring-2 ring-white" />
             )}
@@ -138,7 +147,11 @@ export default function BottomNav({
           className={item(active === 'profil')}
           style={linkStyle}
         >
-          <span className="ms text-[22px]">person</span>
+          <Icon
+            name="person"
+            size={22}
+            className={active === 'profil' ? 'text-blue-600' : 'text-slate-500'}
+          />
           <span className={lbl(active === 'profil')}>Profil</span>
         </Link>
       </div>
