@@ -65,6 +65,7 @@ jobs:
       - name: Execute Prisma Migration against Test DB
         env:
           DATABASE_URL: postgresql://kibar:kibar_test_password@localhost:5432/kibar_test
+          DIRECT_URL: postgresql://kibar:kibar_test_password@localhost:5432/kibar_test
         run: |
           npm -w apps/api run prisma:deploy
 
