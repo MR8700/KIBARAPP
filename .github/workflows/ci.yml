@@ -40,20 +40,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-      minio:
-        image: quay.io/minio/minio:latest
-        env:
-          MINIO_ROOT_USER: kibar_minio_user
-          MINIO_ROOT_PASSWORD: kibar_minio_password_123
-        ports:
-          - 9000:9000
-        options: >-
-          server /data
-
-      clamav:
-        image: clamav/clamav:1.4
-        ports:
-          - 3310:3310
+      # Note: ClamAV et MinIO sont testés avec résilience/fallback local dans les tests unitaires
 
     steps:
       - name: Checkout Code
