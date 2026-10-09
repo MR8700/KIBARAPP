@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useParams, useSearchParams } from 'next/navigation';
-import { DndContext, KeyboardSensor, PointerSensor, TouchSensor, closestCenter, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, KeyboardSensor, PointerSensor, TouchSensor, closestCenter, useSensor, useSensors, type DragEndEvent } from '@dnd-kit/core';
 import { SortableContext, arrayMove, useSortable, verticalListSortingStrategy, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import CandidateFlow from '@/components/CandidateFlow';
@@ -417,7 +417,7 @@ function Builder() {
           sensors={sensors}
           collisionDetection={closestCenter}
           onDragStart={() => navigator.vibrate?.(15)}
-          onDragEnd={({ active, over }) => {
+          onDragEnd={({ active, over }: DragEndEvent) => {
             if (!over || active.id === over.id) return;
             const sec = draft.sections.find((s) => s.fields.some((f) => f.key === active.id));
             if (!sec || !sec.fields.some((f) => f.key === over.id)) return;

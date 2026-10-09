@@ -49,7 +49,13 @@ export class AuthService {
       response, expectedChallenge: c.challenge, expectedOrigin: ALLOWED_ORIGINS, expectedRPID: RP_ID, requireUserVerification: true,
     }).catch(() => null);
     if (!v?.verified) throw new UnauthorizedException('Preuve invalide');
-    const { credential } = v.registrationInfo!;
+    const reg = v.registrationInfo!;
+    const credential = {
+      id: reg.credentialID,
+      publicKey: reg.credentialPublicKey,
+      counter: reg.counter,
+      transports: (response as any)?.response?.transports,
+    };
     return this.db.$transaction(async (tx) => {
       if (c.kind === 'recover') {
         const used = await tx.recoveryCode.updateMany({ where: { id: c.codeId, userId, usedAt: null, revokedAt: null }, data: { usedAt: new Date() } });
@@ -92,7 +98,7 @@ export class AuthService {
     if (!cred || cred.userId !== userId || cred.revokedAt || cred.device.revokedAt) throw new UnauthorizedException('Appareil non autorisé');
     const v = await verifyAuthenticationResponse({
       response, expectedChallenge: c.challenge, expectedOrigin: ALLOWED_ORIGINS, expectedRPID: RP_ID, requireUserVerification: true,
-      credential: { id: cred.credentialId, publicKey: new Uint8Array(cred.publicKey), counter: cred.signCount, transports: cred.transports as any },
+      authenticator: { credentialID: cred.credentialId, credentialPublicKey: new Uint8Array(cred.publicKey), counter: cred.signCount, transports: cred.transports as any },
     }).catch(() => null);
     if (!v?.verified) throw new UnauthorizedException('Preuve invalide');
     await this.db.credential.update({ where: { id: cred.id }, data: { signCount: v.authenticationInfo.newCounter, lastUsedAt: new Date() } });
@@ -133,7 +139,7 @@ export class AuthService {
     if (!cred || cred.revokedAt || cred.device.revokedAt || cred.user.status !== 'ACTIVE') throw new UnauthorizedException('Appareil non autorisé');
     const v = await verifyAuthenticationResponse({
       response, expectedChallenge: c.challenge, expectedOrigin: ALLOWED_ORIGINS, expectedRPID: RP_ID, requireUserVerification: true,
-      credential: { id: cred.credentialId, publicKey: new Uint8Array(cred.publicKey), counter: cred.signCount, transports: cred.transports as any },
+      authenticator: { credentialID: cred.credentialId, credentialPublicKey: new Uint8Array(cred.publicKey), counter: cred.signCount, transports: cred.transports as any },
     }).catch(() => null);
     if (!v?.verified) throw new UnauthorizedException('Preuve invalide');
     await this.db.credential.update({ where: { id: cred.id }, data: { signCount: v.authenticationInfo.newCounter, lastUsedAt: new Date() } });
