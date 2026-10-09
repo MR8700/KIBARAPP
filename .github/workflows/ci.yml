@@ -66,7 +66,7 @@ jobs:
         env:
           DATABASE_URL: postgresql://kibar:kibar_test_password@localhost:5432/kibar_test
         run: |
-          npm -w apps/api exec prisma migrate deploy -- --schema=prisma/schema.prisma
+          npm -w apps/api run prisma:deploy
 
       - name: Run API Unit Tests
         env:
